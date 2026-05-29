@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Md Shahin Baksh — Flutter Developer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #050a14;
+      --surface: #0d1629;
+      --blue: #0ea5e9;
+      --blue-glow: rgba(14,165,233,0.15);
+      --cyan: #22d3ee;
+      --white: #f0f6ff;
+      --grey: #6b7fa3;
+      --border: rgba(14,165,233,0.18);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 400;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* GRID BG */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(14,165,233,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(14,165,233,0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* GLOW */
+    .glow-orb {
+      position: fixed;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(14,165,233,0.08) 0%, transparent 70%);
+      top: -200px;
+      right: -200px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* HEADER */
+    header {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.8rem 3rem;
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(10px);
+      animation: fadeDown 0.8s ease both;
+    }
+
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--blue);
+      letter-spacing: 0.05em;
+    }
+
+    .bolt-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(14,165,233,0.1);
+      border: 1px solid var(--border);
+      border-radius: 2rem;
+      padding: 0.4rem 1rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--cyan);
+    }
+
+    .bolt-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #22c55e;
+      animation: pulse 2s infinite;
+    }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      z-index: 10;
+      padding: 6rem 3rem 4rem;
+      max-width: 860px;
+      animation: fadeUp 1s ease 0.2s both;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.72rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .hero-eyebrow::after {
+      content: '';
+      flex: 1;
+      max-width: 3rem;
+      height: 1px;
+      background: var(--blue);
+      opacity: 0.5;
+    }
+
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+    }
+
+    h1 .highlight {
+      color: var(--blue);
+    }
+
+    .hero-desc {
+      font-size: 1.05rem;
+      line-height: 1.85;
+      color: var(--grey);
+      max-width: 540px;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .tag {
+      background: var(--blue-glow);
+      border: 1px solid var(--border);
+      border-radius: 0.4rem;
+      padding: 0.35rem 0.8rem;
+      font-size: 0.78rem;
+      color: var(--cyan);
+      font-weight: 500;
+    }
+
+    .hero-cta {
+      display: inline-block;
+      background: var(--blue);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 0.9rem 2.2rem;
+      border-radius: 0.5rem;
+      transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 0 24px rgba(14,165,233,0.3);
+    }
+    .hero-cta:hover {
+      background: var(--cyan);
+      transform: translateY(-2px);
+      box-shadow: 0 0 32px rgba(34,211,238,0.4);
+    }
+
+    /* STATS */
+    .stats-bar {
+      position: relative;
+      z-index: 10;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      animation: fadeUp 1s ease 0.3s both;
+    }
+
+    .stat {
+      padding: 2rem 3rem;
+      border-right: 1px solid var(--border);
+    }
+    .stat:last-child { border-right: none; }
+
+    .stat-number {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--blue);
+      line-height: 1;
+      margin-bottom: 0.3rem;
+    }
+
+    .stat-label {
+      font-size: 0.78rem;
+      color: var(--grey);
+      letter-spacing: 0.08em;
+    }
+
+    /* SECTIONS */
+    .section {
+      position: relative;
+      z-index: 10;
+      padding: 5rem 3rem;
+      animation: fadeUp 1s ease 0.4s both;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 3rem;
+    }
+
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--blue);
+    }
+
+    .section-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* SKILLS */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .skill-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 0.8rem;
+      padding: 1.5rem;
+      transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    }
+    .skill-card:hover {
+      border-color: var(--blue);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 32px rgba(14,165,233,0.1);
+    }
+
+    .skill-icon { font-size: 1.6rem; margin-bottom: 0.8rem; }
+
+    .skill-card h3 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      color: var(--white);
+    }
+
+    .skill-card p {
+      font-size: 0.8rem;
+      color: var(--grey);
+      line-height: 1.6;
+    }
+
+    .skill-bar-wrap {
+      margin-top: 0.8rem;
+      background: rgba(14,165,233,0.08);
+      border-radius: 1rem;
+      height: 4px;
+      overflow: hidden;
+    }
+
+    .skill-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--blue), var(--cyan));
+      border-radius: 1rem;
+    }
+
+    /* PROJECTS */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 2rem;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .project-card:hover {
+      border-color: var(--blue);
+      transform: translateY(-4px);
+    }
+
+    .project-tag {
+      display: inline-block;
+      background: var(--blue-glow);
+      border: 1px solid var(--border);
+      border-radius: 0.3rem;
+      padding: 0.2rem 0.6rem;
+      font-size: 0.7rem;
+      color: var(--cyan);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .project-card h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+    }
+
+    .project-card p {
+      font-size: 0.85rem;
+      color: var(--grey);
+      line-height: 1.7;
+    }
+
+    /* BOLT SECTION */
+    .bolt-section {
+      position: relative;
+      z-index: 10;
+      padding: 5rem 3rem;
+      animation: fadeUp 1s ease 0.5s both;
+    }
+
+    .bolt-card {
+      background: linear-gradient(135deg, rgba(14,165,233,0.08), rgba(34,211,238,0.04));
+      border: 1px solid rgba(14,165,233,0.3);
+      border-radius: 1.2rem;
+      padding: 3rem;
+      display: flex;
+      align-items: center;
+      gap: 3rem;
+      flex-wrap: wrap;
+    }
+
+    .bolt-icon {
+      font-size: 4rem;
+      flex-shrink: 0;
+    }
+
+    .bolt-content h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin-bottom: 0.8rem;
+    }
+
+    .bolt-content p {
+      color: var(--grey);
+      font-size: 0.92rem;
+      line-height: 1.8;
+      max-width: 500px;
+    }
+
+    .bolt-pride {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      background: rgba(34,197,94,0.1);
+      border: 1px solid rgba(34,197,94,0.3);
+      border-radius: 2rem;
+      padding: 0.4rem 1rem;
+      font-size: 0.78rem;
+      color: #22c55e;
+      font-weight: 500;
+    }
+
+    /* REVIEWS */
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .review-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 2rem;
+      transition: border-color 0.3s;
+    }
+    .review-card:hover { border-color: var(--blue); }
+
+    .review-stars {
+      color: #fbbf24;
+      font-size: 0.95rem;
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
+    }
+
+    .review-text {
+      font-size: 0.88rem;
+      color: #a0b0cc;
+      line-height: 1.8;
+      font-style: italic;
+      margin-bottom: 1.2rem;
+    }
+
+    .review-author {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .review-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--blue-glow);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--cyan);
+    }
+
+    .review-name {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--white);
+    }
+
+    .review-date {
+      font-size: 0.72rem;
+      color: var(--grey);
+    }
+
+    /* CONTACT */
+    .contact-section {
+      position: relative;
+      z-index: 10;
+      padding: 5rem 3rem 7rem;
+      animation: fadeUp 1s ease 0.6s both;
+    }
+
+    .contact-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 1.2rem;
+      padding: 3rem;
+      max-width: 520px;
+    }
+
+    .contact-box h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+
+    .contact-box p {
+      color: var(--grey);
+      font-size: 0.9rem;
+      margin-bottom: 2rem;
+      line-height: 1.7;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.9rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      font-size: 0.9rem;
+    }
+    .contact-item:last-child { border-bottom: none; }
+
+    .contact-label {
+      color: var(--grey);
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      min-width: 90px;
+    }
+
+    /* FOOTER */
+    footer {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 2rem 3rem;
+      border-top: 1px solid var(--border);
+      color: var(--grey);
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+    }
+
+    /* DIVIDER */
+    .divider {
+      position: relative;
+      z-index: 10;
+      width: calc(100% - 6rem);
+      margin: 0 3rem;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.3; }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 600px) {
+      header, .hero, .section, .bolt-section, .contact-section { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .divider { width: calc(100% - 3rem); margin: 0 1.5rem; }
+      h1 { font-size: 2.8rem; }
+      .stat { padding: 1.5rem; }
+      .bolt-card { flex-direction: column; gap: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="glow-orb"></div>
+
+  <header>
+    <div class="logo">Md Shahin Baksh</div>
+    <div class="bolt-badge">
+      <span class="bolt-dot"></span>
+      Working with Bolt
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-eyebrow">Flutter Developer · Freelancer</div>
+    <h1>Building Apps<br>that <span class="highlight">Matter.</span></h1>
+    <p class="hero-desc">
+      Freelance Flutter developer with 4 years of experience crafting high-performance mobile applications for iOS and Android. Passionate about clean architecture and pixel-perfect UI.
+    </p>
+    <div class="hero-tags">
+      <span class="tag">Flutter</span>
+      <span class="tag">Dart</span>
+      <span class="tag">Firebase</span>
+      <span class="tag">REST APIs</span>
+      <span class="tag">UI/UX</span>
+      <span class="tag">State Management</span>
+      <span class="tag">GetX</span>
+      <span class="tag">Bloc</span>
+    </div>
+    <a href="#contact" class="hero-cta">Hire Me</a>
+  </section>
+
+  <div class="stats-bar">
+    <div class="stat">
+      <div class="stat-number">4+</div>
+      <div class="stat-label">Years Experience</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">20+</div>
+      <div class="stat-label">Projects Delivered</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">15+</div>
+      <div class="stat-label">Happy Clients</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">5★</div>
+      <div class="stat-label">Average Rating</div>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="section-header">
+      <div class="section-label">Skills & Expertise</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <div class="skill-icon">📱</div>
+        <h3>Flutter & Dart</h3>
+        <p>Cross-platform mobile development for iOS & Android from a single codebase.</p>
+        <div class="skill-bar-wrap"><div class="skill-bar" style="width:95%"></div></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🔥</div>
+        <h3>Firebase</h3>
+        <p>Realtime database, authentication, cloud functions and push notifications.</p>
+        <div class="skill-bar-wrap"><div class="skill-bar" style="width:88%"></div></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🔗</div>
+        <h3>REST APIs</h3>
+        <p>Seamless integration with backend services and third-party APIs.</p>
+        <div class="skill-bar-wrap"><div class="skill-bar" style="width:90%"></div></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🧩</div>
+        <h3>State Management</h3>
+        <p>Expert in GetX, Bloc, Provider for scalable app architecture.</p>
+        <div class="skill-bar-wrap"><div class="skill-bar" style="width:92%"></div></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🎨</div>
+        <h3>UI/UX Design</h3>
+        <p>Pixel-perfect interfaces with smooth animations and great user experience.</p>
+        <div class="skill-bar-wrap"><div class="skill-bar" style="width:85%"></div></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🚀</div>
+        <h3>App Publishing</h3>
+        <p>Full deployment to Google Play Store and Apple App Store.</p>
+        <div class="skill-bar-wrap"><div class="skill-bar" style="width:87%"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section class="section">
+    <div class="section-header">
+      <div class="section-label">Previous Work</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="projects-grid">
+      <div class="project-card">
+        <div class="project-tag">Flutter · Firebase</div>
+        <h3>E-Commerce App</h3>
+        <p>Full-featured shopping app with cart, payments, real-time order tracking and push notifications.</p>
+      </div>
+      <div class="project-card">
+        <div class="project-tag">Flutter · REST API</div>
+        <h3>Ride Booking App</h3>
+        <p>On-demand ride booking platform with live map tracking, driver matching and in-app chat.</p>
+      </div>
+      <div class="project-card">
+        <div class="project-tag">Flutter · GetX</div>
+        <h3>Fitness Tracker</h3>
+        <p>Health and fitness app with workout plans, progress tracking and custom animations.</p>
+      </div>
+      <div class="project-card">
+        <div class="project-tag">Flutter · Bloc</div>
+        <h3>Finance Dashboard</h3>
+        <p>Personal finance management app with expense tracking, charts and budget alerts.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section class="bolt-section">
+    <div class="bolt-card">
+      <div class="bolt-icon">⚡</div>
+      <div class="bolt-content">
+        <h2>Currently Working with Bolt</h2>
+        <p>Proud to be part of the Bolt ecosystem — one of Europe's fastest-growing ride-hailing platforms. This collaboration has sharpened my skills in real-time systems, location services, and scalable mobile architecture.</p>
+        <div class="bolt-pride">
+          ✅ Active Collaboration · Bolt Platform
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section class="section">
+    <div class="section-header">
+      <div class="section-label">Client Reviews</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="reviews-grid">
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Shahin delivered an outstanding Flutter app ahead of schedule. Clean code, great communication, and the UI was exactly what we envisioned."</p>
+        <div class="review-author">
+          <div class="review-avatar">JT</div>
+          <div>
+            <div class="review-name">James Thompson</div>
+            <div class="review-date">London, UK · March 2024</div>
+          </div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Exceptional Flutter developer. He built our e-commerce app from scratch with Firebase integration. Very professional and detail-oriented."</p>
+        <div class="review-author">
+          <div class="review-avatar">SM</div>
+          <div>
+            <div class="review-name">Sarah Mitchell</div>
+            <div class="review-date">Manchester, UK · January 2024</div>
+          </div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Highly recommended! Shahin's expertise in Flutter and state management saved us weeks of development time. Will definitely work together again."</p>
+        <div class="review-author">
+          <div class="review-avatar">DK</div>
+          <div>
+            <div class="review-name">David Kowalski</div>
+            <div class="review-date">Birmingham, UK · November 2023</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section class="contact-section" id="contact">
+    <div class="section-header">
+      <div class="section-label">Contact</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="contact-box">
+      <h2>Let's Build Together</h2>
+      <p>Available for freelance Flutter projects. Let's turn your idea into a high-quality mobile app.</p>
+      <div class="contact-item">
+        <span class="contact-label">Name</span>
+        <span>Md Shahin Baksh</span>
+      </div>
+      <div class="contact-item">
+        <span class="contact-label">Role</span>
+        <span>Freelance Flutter Developer</span>
+      </div>
+      <div class="contact-item">
+        <span class="contact-label">Experience</span>
+        <span>4+ Years</span>
+      </div>
+      <div class="contact-item">
+        <span class="contact-label">Platform</span>
+        <span style="color:#22c55e;">⚡ Bolt · Active</span>
+      </div>
+      <div class="contact-item">
+        <span class="contact-label">Status</span>
+        <span style="color:#22c55e;">Available for hire</span>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    © 2025 Md Shahin Baksh · Flutter Developer · All Rights Reserved
+  </footer>
+
+</body>
+</html>
